@@ -104,8 +104,8 @@ export default function Login({ status }) {
             <div className="mt-8 p-4 bg-gray-50 rounded-lg">
                 <h3 className="text-sm font-semibold text-gray-700 mb-2">Credenciales de prueba:</h3>
                 <div className="text-xs text-gray-600 space-y-1">
-                    <p><strong>Admin:</strong> admin@libroconecta.com / password</p>
-                    <p><strong>Cliente:</strong> client@libroconecta.com / password</p>
+                    <p><strong>Admin:</strong> admin@libroconecta.com / 12345678</p>
+                    <p><strong>Cliente:</strong> maria@correo.com / 12345678</p>
                 </div>
             </div>
         </GuestLayout>
