@@ -13,7 +13,16 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::firstOrCreate(['name' => 'Administrator'], ['description' => 'Acceso total al sistema']);
-        Role::firstOrCreate(['name' => 'Client'], ['description' => 'Acceso a catálogo y reservas propias']);
+        $roles = [
+            ['name' => 'Administrador', 'description' => 'Control total del sistema'],
+            ['name' => 'Cliente',       'description' => 'Usuario que realiza reservas'],
+            ['name' => 'Empleado',      'description' => 'Gestión básica del catálogo'],
+            ['name' => 'Supervisor',    'description' => 'Supervisión de operaciones'],
+            ['name' => 'Invitado',      'description' => 'Consulta sin permisos de modificación'],
+        ];
+
+        foreach ($roles as $role) {
+            Role::firstOrCreate(['name' => $role['name']], $role);
+        }
     }
 }

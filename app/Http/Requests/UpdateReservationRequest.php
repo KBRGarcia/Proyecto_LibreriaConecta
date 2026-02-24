@@ -23,8 +23,8 @@ class UpdateReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => ['required', Rule::in(['pending', 'confirmed', 'cancelled', 'completed'])],
-            'notes' => ['nullable', 'string', 'max:500'],
+            'status' => ['required', Rule::in(['pendiente', 'confirmada', 'cancelada'])],
+            'notes'  => ['nullable', 'string', 'max:500'],
         ];
     }
 

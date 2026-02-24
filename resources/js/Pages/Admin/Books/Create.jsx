@@ -10,13 +10,13 @@ import SecondaryButton from '@/Components/SecondaryButton';
 
 export default function Create({ categories }) {
     const { data, setData, post, processing, errors } = useForm({
+        category_id: '',
         title: '',
         author: '',
         isbn: '',
-        description: '',
-        stock: 0,
         price: '',
-        category_id: '',
+        stock: 0,
+        description: '',
         cover_image: null,
     });
 

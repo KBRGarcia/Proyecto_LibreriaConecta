@@ -35,8 +35,8 @@ class DashboardController extends Controller
             'totalBooks' => Book::count(),
             'totalUsers' => User::count(),
             'totalReservations' => Reservation::count(),
-            'pendingReservations' => Reservation::where('status', 'pending')->count(),
-            'confirmedReservations' => Reservation::where('status', 'confirmed')->count(),
+            'pendingReservations' => Reservation::where('status', 'pendiente')->count(),
+            'confirmedReservations' => Reservation::where('status', 'confirmada')->count(),
             'totalCategories' => Category::count(),
         ];
 
@@ -76,8 +76,8 @@ class DashboardController extends Controller
 
         $stats = [
             'totalReservations' => $user->reservations()->count(),
-            'pendingReservations' => $user->reservations()->where('status', 'pending')->count(),
-            'confirmedReservations' => $user->reservations()->where('status', 'confirmed')->count(),
+            'pendingReservations' => $user->reservations()->where('status', 'pendiente')->count(),
+            'confirmedReservations' => $user->reservations()->where('status', 'confirmada')->count(),
         ];
 
         return Inertia::render('Dashboard', [

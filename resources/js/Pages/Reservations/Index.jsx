@@ -97,7 +97,7 @@ export default function Index({ auth, reservations }) {
                                                                 >
                                                                     Ver
                                                                 </Link>
-                                                                {(reservation.status === 'pending' || reservation.status === 'confirmed') && (
+                                                                {reservation.status === 'pendiente' && (
                                                                     <button
                                                                         onClick={() => handleCancel(reservation)}
                                                                         className="text-red-600 hover:text-red-900"

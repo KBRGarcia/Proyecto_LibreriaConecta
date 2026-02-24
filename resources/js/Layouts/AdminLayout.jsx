@@ -12,6 +12,7 @@ export default function AdminLayout({ header, children }) {
         { name: 'Reservas', href: route('admin.reservations.index'), icon: ClipboardIcon },
         { name: 'Usuarios', href: route('admin.users.index'), icon: UsersIcon },
         { name: 'Reportes', href: route('admin.reports'), icon: ChartIcon },
+        { name: 'Bitácora', href: route('admin.action_logs.index'), icon: LogIcon },
     ];
 
     return (
@@ -85,7 +86,7 @@ export default function AdminLayout({ header, children }) {
                                 href={route('profile')}
                                 className="text-sm text-gray-700 hover:text-indigo-600"
                             >
-                                {auth?.user?.name}
+                                {auth?.user?.first_name} {auth?.user?.last_name}
                             </Link>
                             <Link
                                 href={route('logout')}
@@ -151,6 +152,14 @@ function ChartIcon({ className }) {
     return (
         <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+    );
+}
+
+function LogIcon({ className }) {
+    return (
+        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
     );
 }

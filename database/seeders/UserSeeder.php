@@ -15,25 +15,61 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminRole = Role::where('name', 'Administrator')->first();
-        $clientRole = Role::where('name', 'Client')->first();
+        $admin      = Role::where('name', 'Administrador')->first();
+        $cliente    = Role::where('name', 'Cliente')->first();
+        $empleado   = Role::where('name', 'Empleado')->first();
+        $supervisor = Role::where('name', 'Supervisor')->first();
 
-        // Admin User
-        User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@libroconecta.com',
-            'password' => Hash::make('password'),
-            'role_id' => $adminRole->id,
-            'email_verified_at' => now(),
-        ]);
+        $users = [
+            [
+                'first_name' => 'Ikabaru',
+                'last_name'  => 'Garcia',
+                'email'      => 'admin@libroconecta.com',
+                'password'   => Hash::make('12345678'),
+                'role_id'    => $admin->id,
+                'status'     => 'activo',
+                'email_verified_at' => now(),
+            ],
+            [
+                'first_name' => 'Maria',
+                'last_name'  => 'Perez',
+                'email'      => 'maria@correo.com',
+                'password'   => Hash::make('12345678'),
+                'role_id'    => $cliente->id,
+                'status'     => 'activo',
+                'email_verified_at' => now(),
+            ],
+            [
+                'first_name' => 'Carlos',
+                'last_name'  => 'Rodriguez',
+                'email'      => 'carlos@correo.com',
+                'password'   => Hash::make('12345678'),
+                'role_id'    => $cliente->id,
+                'status'     => 'activo',
+                'email_verified_at' => now(),
+            ],
+            [
+                'first_name' => 'Ana',
+                'last_name'  => 'Lopez',
+                'email'      => 'ana@correo.com',
+                'password'   => Hash::make('12345678'),
+                'role_id'    => $empleado->id,
+                'status'     => 'activo',
+                'email_verified_at' => now(),
+            ],
+            [
+                'first_name' => 'Luis',
+                'last_name'  => 'Fernandez',
+                'email'      => 'luis@correo.com',
+                'password'   => Hash::make('12345678'),
+                'role_id'    => $supervisor->id,
+                'status'     => 'inactivo',
+                'email_verified_at' => now(),
+            ],
+        ];
 
-        // Client User
-        User::create([
-            'name' => 'Client User',
-            'email' => 'client@libroconecta.com',
-            'password' => Hash::make('password'),
-            'role_id' => $clientRole->id,
-            'email_verified_at' => now(),
-        ]);
+        foreach ($users as $userData) {
+            User::firstOrCreate(['email' => $userData['email']], $userData);
+        }
     }
 }

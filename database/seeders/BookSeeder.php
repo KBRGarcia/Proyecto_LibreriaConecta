@@ -252,6 +252,7 @@ class BookSeeder extends Seeder
 
             if (isset($categories[$categoryName])) {
                 $bookData['category_id'] = $categories[$categoryName]->id;
+                $bookData['status'] = $bookData['stock'] > 0 ? 'disponible' : 'agotado';
                 Book::firstOrCreate(['isbn' => $bookData['isbn']], $bookData);
             }
         }

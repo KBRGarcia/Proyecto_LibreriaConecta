@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ActionLogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
@@ -65,7 +66,7 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:Administrator'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:Administrador'])->prefix('admin')->name('admin.')->group(function () {
     // Reports
     Route::get('/reportes', [DashboardController::class, 'reports'])->name('reports');
 
@@ -96,4 +97,7 @@ Route::middleware(['auth', 'role:Administrator'])->prefix('admin')->name('admin.
     // Reservations Management
     Route::get('/reservas', [ReservationController::class, 'adminIndex'])->name('reservations.index');
     Route::put('/reservas/{reservation}', [ReservationController::class, 'updateStatus'])->name('reservations.update');
+
+    // Bitácora
+    Route::get('/bitacora', [ActionLogController::class, 'index'])->name('action_logs.index');
 });

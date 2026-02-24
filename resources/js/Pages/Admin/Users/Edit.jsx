@@ -9,13 +9,13 @@ import SecondaryButton from '@/Components/SecondaryButton';
 
 export default function Edit({ user, roles }) {
     const { data, setData, put, processing, errors } = useForm({
-        name: user.name,
+        first_name: user.first_name,
+        last_name: user.last_name,
         email: user.email,
         password: '',
         password_confirmation: '',
         role_id: user.role_id || '',
-        phone: user.phone || '',
-        address: user.address || '',
+        status: user.status || 'activo',
     });
 
     const submit = (e) => {
@@ -30,16 +30,30 @@ export default function Edit({ user, roles }) {
             <div className="max-w-xl">
                 <div className="bg-white shadow-sm rounded-lg">
                     <form onSubmit={submit} className="p-6 space-y-6">
-                        <div>
-                            <InputLabel htmlFor="name" value="Nombre" />
-                            <TextInput
-                                id="name"
-                                value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
-                                className="mt-1 block w-full"
-                                required
-                            />
-                            <InputError message={errors.name} className="mt-2" />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <InputLabel htmlFor="first_name" value="Nombre" />
+                                <TextInput
+                                    id="first_name"
+                                    value={data.first_name}
+                                    onChange={(e) => setData('first_name', e.target.value)}
+                                    className="mt-1 block w-full"
+                                    required
+                                />
+                                <InputError message={errors.first_name} className="mt-2" />
+                            </div>
+
+                            <div>
+                                <InputLabel htmlFor="last_name" value="Apellido" />
+                                <TextInput
+                                    id="last_name"
+                                    value={data.last_name}
+                                    onChange={(e) => setData('last_name', e.target.value)}
+                                    className="mt-1 block w-full"
+                                    required
+                                />
+                                <InputError message={errors.last_name} className="mt-2" />
+                            </div>
                         </div>
 
                         <div>
@@ -55,21 +69,38 @@ export default function Edit({ user, roles }) {
                             <InputError message={errors.email} className="mt-2" />
                         </div>
 
-                        <div>
-                            <InputLabel htmlFor="role_id" value="Rol" />
-                            <SelectInput
-                                id="role_id"
-                                value={data.role_id}
-                                onChange={(e) => setData('role_id', e.target.value)}
-                                className="mt-1 block w-full"
-                                required
-                            >
-                                <option value="">Seleccionar rol</option>
-                                {roles.map((role) => (
-                                    <option key={role.id} value={role.id}>{role.name}</option>
-                                ))}
-                            </SelectInput>
-                            <InputError message={errors.role_id} className="mt-2" />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <InputLabel htmlFor="role_id" value="Rol" />
+                                <SelectInput
+                                    id="role_id"
+                                    value={data.role_id}
+                                    onChange={(e) => setData('role_id', e.target.value)}
+                                    className="mt-1 block w-full"
+                                    required
+                                >
+                                    <option value="">Seleccionar rol</option>
+                                    {roles.map((role) => (
+                                        <option key={role.id} value={role.id}>{role.name}</option>
+                                    ))}
+                                </SelectInput>
+                                <InputError message={errors.role_id} className="mt-2" />
+                            </div>
+
+                            <div>
+                                <InputLabel htmlFor="status" value="Estado" />
+                                <SelectInput
+                                    id="status"
+                                    value={data.status}
+                                    onChange={(e) => setData('status', e.target.value)}
+                                    className="mt-1 block w-full"
+                                    required
+                                >
+                                    <option value="activo">Activo</option>
+                                    <option value="inactivo">Inactivo</option>
+                                </SelectInput>
+                                <InputError message={errors.status} className="mt-2" />
+                            </div>
                         </div>
 
                         <div className="p-4 bg-gray-50 rounded-lg">
@@ -100,28 +131,6 @@ export default function Edit({ user, roles }) {
                                     />
                                 </div>
                             </div>
-                        </div>
-
-                        <div>
-                            <InputLabel htmlFor="phone" value="Teléfono (opcional)" />
-                            <TextInput
-                                id="phone"
-                                value={data.phone}
-                                onChange={(e) => setData('phone', e.target.value)}
-                                className="mt-1 block w-full"
-                            />
-                            <InputError message={errors.phone} className="mt-2" />
-                        </div>
-
-                        <div>
-                            <InputLabel htmlFor="address" value="Dirección (opcional)" />
-                            <TextInput
-                                id="address"
-                                value={data.address}
-                                onChange={(e) => setData('address', e.target.value)}
-                                className="mt-1 block w-full"
-                            />
-                            <InputError message={errors.address} className="mt-2" />
                         </div>
 
                         <div className="flex justify-end space-x-4 pt-4 border-t">

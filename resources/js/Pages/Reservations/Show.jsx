@@ -124,7 +124,7 @@ export default function Show({ auth, reservation }) {
                                 <Link href={route('reservations.index')}>
                                     <SecondaryButton>Volver a mis reservas</SecondaryButton>
                                 </Link>
-                                {(reservation.status === 'pending' || reservation.status === 'confirmed') && (
+                                {reservation.status === 'pendiente' && (
                                     <DangerButton onClick={handleCancel}>
                                         Cancelar reserva
                                     </DangerButton>

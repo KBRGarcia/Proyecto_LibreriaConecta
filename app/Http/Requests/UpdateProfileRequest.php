@@ -23,23 +23,20 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', Rule::unique('users')->ignore($this->user()->id)],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'address' => ['nullable', 'string', 'max:500'],
+            'first_name' => ['required', 'string', 'max:100'],
+            'last_name'  => ['required', 'string', 'max:100'],
+            'email'      => ['required', 'email', 'max:150', Rule::unique('users')->ignore($this->user()->id)],
         ];
     }
 
-    /**
-     * Get custom messages for validator errors.
-     */
     public function messages(): array
     {
         return [
-            'name.required' => 'El nombre es obligatorio.',
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.email' => 'El correo electrónico debe ser válido.',
-            'email.unique' => 'Este correo electrónico ya está en uso.',
+            'first_name.required' => 'El nombre es obligatorio.',
+            'last_name.required'  => 'El apellido es obligatorio.',
+            'email.required'      => 'El correo electrónico es obligatorio.',
+            'email.email'         => 'El correo electrónico debe ser válido.',
+            'email.unique'        => 'Este correo electrónico ya está en uso.',
         ];
     }
 }

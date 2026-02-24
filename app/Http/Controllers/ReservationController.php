@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
+use App\Models\ActionLog;
 use App\Models\Book;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
@@ -55,12 +56,21 @@ class ReservationController extends Controller
         }
 
         $reservation = Reservation::create([
-            'user_id' => $request->user()->id,
-            'book_id' => $request->book_id,
+            'user_id'          => $request->user()->id,
+            'book_id'          => $request->book_id,
             'reservation_date' => $request->reservation_date,
-            'notes' => $request->notes,
-            'status' => 'pending',
+            'notes'            => $request->notes,
+            'status'           => 'pendiente',
         ]);
+
+        ActionLog::log(
+            $request->user()->id,
+            'INSERT',
+            'reservations',
+            $reservation->id,
+            "Reserva #{$reservation->id} creada para el libro ID {$reservation->book_id}",
+            $request->ip()
+        );
 
         return redirect()->route('reservations.index')
             ->with('success', 'Reserva creada exitosamente. Te notificaremos cuando esté confirmada.');
@@ -87,11 +97,20 @@ class ReservationController extends Controller
     {
         $this->authorizeReservation($reservation);
 
-        if ($reservation->status === 'completed') {
-            return back()->withErrors(['status' => 'No se puede cancelar una reserva completada.']);
+        if ($reservation->status === 'confirmada') {
+            return back()->withErrors(['status' => 'Contacta al administrador para cancelar una reserva confirmada.']);
         }
 
-        $reservation->update(['status' => 'cancelled']);
+        $reservation->update(['status' => 'cancelada']);
+
+        ActionLog::log(
+            auth()->id(),
+            'UPDATE',
+            'reservations',
+            $reservation->id,
+            "Reserva #{$reservation->id} cancelada por el usuario",
+            request()->ip()
+        );
 
         return redirect()->route('reservations.index')
             ->with('success', 'Reserva cancelada exitosamente.');
@@ -111,7 +130,8 @@ class ReservationController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->whereHas('user', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
+                $q->where('first_name', 'like', "%{$search}%")
+                  ->orWhere('last_name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%");
             })->orWhereHas('book', function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%");
@@ -131,7 +151,17 @@ class ReservationController extends Controller
      */
     public function updateStatus(UpdateReservationRequest $request, Reservation $reservation)
     {
+        $oldStatus = $reservation->status;
         $reservation->update($request->validated());
+
+        ActionLog::log(
+            auth()->id(),
+            'UPDATE',
+            'reservations',
+            $reservation->id,
+            "Estado de reserva #{$reservation->id} cambiado de '{$oldStatus}' a '{$reservation->status}'",
+            $request->ip()
+        );
 
         return redirect()->route('admin.reservations.index')
             ->with('success', 'Estado de reserva actualizado.');

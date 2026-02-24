@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use App\Models\ActionLog;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -66,7 +67,18 @@ class BookController extends Controller
             $data['cover_image'] = $request->file('cover_image')->store('covers', 'public');
         }
 
-        Book::create($data);
+        $data['status'] = ($data['stock'] ?? 0) > 0 ? 'disponible' : 'agotado';
+
+        $book = Book::create($data);
+
+        ActionLog::log(
+            auth()->id(),
+            'INSERT',
+            'books',
+            $book->id,
+            "Libro '{$book->title}' agregado al catálogo",
+            $request->ip()
+        );
 
         return redirect()->route('admin.books.index')
             ->with('success', 'Libro creado exitosamente.');
@@ -116,7 +128,18 @@ class BookController extends Controller
             $data['cover_image'] = $request->file('cover_image')->store('covers', 'public');
         }
 
+        $data['status'] = isset($data['stock']) && $data['stock'] > 0 ? 'disponible' : 'agotado';
+
         $book->update($data);
+
+        ActionLog::log(
+            auth()->id(),
+            'UPDATE',
+            'books',
+            $book->id,
+            "Libro '{$book->title}' actualizado",
+            $request->ip()
+        );
 
         return redirect()->route('admin.books.index')
             ->with('success', 'Libro actualizado exitosamente.');
@@ -131,7 +154,18 @@ class BookController extends Controller
             Storage::disk('public')->delete($book->cover_image);
         }
 
+        $title = $book->title;
+        $bookId = $book->id;
         $book->delete();
+
+        ActionLog::log(
+            auth()->id(),
+            'DELETE',
+            'books',
+            $bookId,
+            "Libro '{$title}' eliminado del catálogo",
+            request()->ip()
+        );
 
         return redirect()->route('admin.books.index')
             ->with('success', 'Libro eliminado exitosamente.');

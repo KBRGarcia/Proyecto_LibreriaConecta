@@ -5,7 +5,7 @@ export default function Authenticated({ user, header, children }) {
     const { auth } = usePage().props;
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const currentUser = auth?.user || user;
-    const isAdmin = currentUser?.role?.name === 'Administrator';
+    const isAdmin = currentUser?.role?.name === 'Administrador';
 
     const navigation = isAdmin
         ? [
@@ -60,7 +60,7 @@ export default function Authenticated({ user, header, children }) {
                                     href={route('profile')}
                                     className="text-sm text-gray-700 hover:text-indigo-600"
                                 >
-                                    {currentUser?.name}
+                                    {currentUser?.first_name} {currentUser?.last_name}
                                 </Link>
                                 <Link
                                     href={route('logout')}
@@ -122,7 +122,7 @@ export default function Authenticated({ user, header, children }) {
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
                         <div className="px-4">
-                            <div className="font-medium text-base text-gray-800">{currentUser?.name}</div>
+                            <div className="font-medium text-base text-gray-800">{currentUser?.first_name} {currentUser?.last_name}</div>
                             <div className="font-medium text-sm text-gray-500">{currentUser?.email}</div>
                         </div>
 

@@ -7,10 +7,9 @@ import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Edit({ auth, user }) {
     const profileForm = useForm({
-        name: user.name,
+        first_name: user.first_name,
+        last_name: user.last_name,
         email: user.email,
-        phone: user.phone || '',
-        address: user.address || '',
     });
 
     const passwordForm = useForm({
@@ -53,18 +52,30 @@ export default function Edit({ auth, user }) {
                             <form onSubmit={submitProfile} className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <InputLabel htmlFor="name" value="Nombre" />
+                                        <InputLabel htmlFor="first_name" value="Nombre" />
                                         <TextInput
-                                            id="name"
-                                            value={profileForm.data.name}
-                                            onChange={(e) => profileForm.setData('name', e.target.value)}
+                                            id="first_name"
+                                            value={profileForm.data.first_name}
+                                            onChange={(e) => profileForm.setData('first_name', e.target.value)}
                                             className="mt-1 block w-full"
                                             required
                                         />
-                                        <InputError message={profileForm.errors.name} className="mt-2" />
+                                        <InputError message={profileForm.errors.first_name} className="mt-2" />
                                     </div>
 
                                     <div>
+                                        <InputLabel htmlFor="last_name" value="Apellido" />
+                                        <TextInput
+                                            id="last_name"
+                                            value={profileForm.data.last_name}
+                                            onChange={(e) => profileForm.setData('last_name', e.target.value)}
+                                            className="mt-1 block w-full"
+                                            required
+                                        />
+                                        <InputError message={profileForm.errors.last_name} className="mt-2" />
+                                    </div>
+
+                                    <div className="md:col-span-2">
                                         <InputLabel htmlFor="email" value="Correo electrónico" />
                                         <TextInput
                                             id="email"
@@ -75,30 +86,6 @@ export default function Edit({ auth, user }) {
                                             required
                                         />
                                         <InputError message={profileForm.errors.email} className="mt-2" />
-                                    </div>
-
-                                    <div>
-                                        <InputLabel htmlFor="phone" value="Teléfono" />
-                                        <TextInput
-                                            id="phone"
-                                            value={profileForm.data.phone}
-                                            onChange={(e) => profileForm.setData('phone', e.target.value)}
-                                            className="mt-1 block w-full"
-                                            placeholder="(opcional)"
-                                        />
-                                        <InputError message={profileForm.errors.phone} className="mt-2" />
-                                    </div>
-
-                                    <div>
-                                        <InputLabel htmlFor="address" value="Dirección" />
-                                        <TextInput
-                                            id="address"
-                                            value={profileForm.data.address}
-                                            onChange={(e) => profileForm.setData('address', e.target.value)}
-                                            className="mt-1 block w-full"
-                                            placeholder="(opcional)"
-                                        />
-                                        <InputError message={profileForm.errors.address} className="mt-2" />
                                     </div>
                                 </div>
 
@@ -124,7 +111,7 @@ export default function Edit({ auth, user }) {
                                 <div className="p-4 bg-gray-50 rounded-lg">
                                     <p className="text-sm text-gray-500">Rol</p>
                                     <p className="font-medium text-gray-900">
-                                        {user.role?.name === 'Administrator' ? 'Administrador' : 'Cliente'}
+                                        {user.role?.name || 'Sin rol'}
                                     </p>
                                 </div>
                                 <div className="p-4 bg-gray-50 rounded-lg">

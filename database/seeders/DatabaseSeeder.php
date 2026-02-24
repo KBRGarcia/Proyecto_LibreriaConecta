@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategorySeeder::class,
             BookSeeder::class,
+            ReservationSeeder::class,
+            ActionLogSeeder::class,
         ]);
     }
 }

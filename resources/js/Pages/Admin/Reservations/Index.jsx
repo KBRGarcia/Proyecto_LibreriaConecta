@@ -61,10 +61,9 @@ export default function Index({ reservations, filters }) {
                             className="w-full sm:w-40"
                         >
                             <option value="">Todos los estados</option>
-                            <option value="pending">Pendiente</option>
-                            <option value="confirmed">Confirmada</option>
-                            <option value="cancelled">Cancelada</option>
-                            <option value="completed">Completada</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="confirmada">Confirmada</option>
+                            <option value="cancelada">Cancelada</option>
                         </SelectInput>
                     </div>
                 </div>
@@ -84,7 +83,9 @@ export default function Index({ reservations, filters }) {
                             {reservations.data.map((reservation) => (
                                 <tr key={reservation.id}>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-gray-900">{reservation.user?.name}</div>
+                                        <div className="text-sm font-medium text-gray-900">
+                                            {reservation.user?.first_name} {reservation.user?.last_name}
+                                        </div>
                                         <div className="text-sm text-gray-500">{reservation.user?.email}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
@@ -128,10 +129,9 @@ export default function Index({ reservations, filters }) {
                             onChange={(e) => setEditModal({ ...editModal, status: e.target.value })}
                             className="w-full"
                         >
-                            <option value="pending">Pendiente</option>
-                            <option value="confirmed">Confirmada</option>
-                            <option value="cancelled">Cancelada</option>
-                            <option value="completed">Completada</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="confirmada">Confirmada</option>
+                            <option value="cancelada">Cancelada</option>
                         </SelectInput>
                     </div>
                     <div className="mt-6 flex justify-end space-x-4">

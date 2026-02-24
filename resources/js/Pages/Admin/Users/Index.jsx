@@ -35,6 +35,20 @@ export default function Index({ users, roles, filters }) {
         });
     };
 
+    const statusColor = (status) =>
+        status === 'activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+
+    const roleColor = (roleName) => {
+        const colors = {
+            'Administrador': 'bg-purple-100 text-purple-800',
+            'Cliente':       'bg-blue-100 text-blue-800',
+            'Empleado':      'bg-yellow-100 text-yellow-800',
+            'Supervisor':    'bg-indigo-100 text-indigo-800',
+            'Invitado':      'bg-gray-100 text-gray-800',
+        };
+        return colors[roleName] || 'bg-gray-100 text-gray-800';
+    };
+
     return (
         <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900">Gestión de Usuarios</h1>}>
             <Head title="Gestión de Usuarios" />
@@ -72,7 +86,7 @@ export default function Index({ users, roles, filters }) {
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Usuario</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rol</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Teléfono</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Registrado</th>
                                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Acciones</th>
                             </tr>
@@ -84,22 +98,26 @@ export default function Index({ users, roles, filters }) {
                                         <div className="flex items-center">
                                             <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
                                                 <span className="text-indigo-600 font-medium text-sm">
-                                                    {user.name.charAt(0).toUpperCase()}
+                                                    {user.first_name?.charAt(0).toUpperCase()}
                                                 </span>
                                             </div>
                                             <div className="ml-4">
-                                                <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                                                <div className="text-sm font-medium text-gray-900">
+                                                    {user.first_name} {user.last_name}
+                                                </div>
                                                 <div className="text-sm text-gray-500">{user.email}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${user.role?.name === 'Administrator' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'}`}>
+                                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${roleColor(user.role?.name)}`}>
                                             {user.role?.name || 'Sin rol'}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {user.phone || '-'}
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColor(user.status)}`}>
+                                            {user.status === 'activo' ? 'Activo' : 'Inactivo'}
+                                        </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {new Date(user.created_at).toLocaleDateString('es-ES')}
@@ -127,7 +145,8 @@ export default function Index({ users, roles, filters }) {
                 <div className="p-6">
                     <h3 className="text-lg font-medium text-gray-900">Eliminar usuario</h3>
                     <p className="mt-2 text-sm text-gray-500">
-                        ¿Estás seguro de que deseas eliminar a "{deleteModal.user?.name}"?
+                        ¿Estás seguro de que deseas eliminar a "{deleteModal.user?.first_name} {deleteModal.user?.last_name}"?
+                        Esta acción no se puede deshacer.
                     </p>
                     <div className="mt-4 flex justify-end space-x-4">
                         <button onClick={() => setDeleteModal({ open: false, user: null })} className="px-4 py-2 text-sm text-gray-700">

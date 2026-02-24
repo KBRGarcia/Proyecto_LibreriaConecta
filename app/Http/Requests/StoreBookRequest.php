@@ -22,14 +22,15 @@ class StoreBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'author' => ['required', 'string', 'max:255'],
-            'isbn' => ['required', 'string', 'max:20', 'unique:books,isbn'],
-            'description' => ['nullable', 'string'],
-            'stock' => ['required', 'integer', 'min:0'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'cover_image' => ['nullable', 'image', 'max:2048'],
-            'category_id' => ['required', 'exists:categories,id'],
+            'category_id'  => ['required', 'exists:categories,id'],
+            'title'        => ['required', 'string', 'max:200'],
+            'author'       => ['required', 'string', 'max:150'],
+            'isbn'         => ['nullable', 'string', 'max:20', 'unique:books,isbn'],
+            'price'        => ['required', 'numeric', 'min:0.01'],
+            'stock'        => ['required', 'integer', 'min:0'],
+            'status'       => ['nullable', 'in:disponible,agotado'],
+            'description'  => ['nullable', 'string'],
+            'cover_image'  => ['nullable', 'image', 'max:2048'],
         ];
     }
 

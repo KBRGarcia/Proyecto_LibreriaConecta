@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\UpdatePasswordRequest;
+use App\Http\Requests\UpdateProfileRequest;
+use App\Models\ActionLog;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -57,7 +58,8 @@ class UserController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
+                $q->where('first_name', 'like', "%{$search}%")
+                  ->orWhere('last_name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%");
             });
         }
@@ -94,17 +96,27 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'min:8', 'confirmed'],
-            'role_id' => ['required', 'exists:roles,id'],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'address' => ['nullable', 'string', 'max:500'],
+            'first_name' => ['required', 'string', 'max:100'],
+            'last_name'  => ['required', 'string', 'max:100'],
+            'email'      => ['required', 'email', 'max:150', 'unique:users,email'],
+            'password'   => ['required', 'min:8', 'confirmed'],
+            'role_id'    => ['required', 'exists:roles,id'],
+            'status'     => ['nullable', 'in:activo,inactivo'],
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
+        $validated['status'] = $validated['status'] ?? 'activo';
 
-        User::create($validated);
+        $user = User::create($validated);
+
+        ActionLog::log(
+            auth()->id(),
+            'INSERT',
+            'users',
+            $user->id,
+            "Usuario '{$user->full_name}' creado por el administrador",
+            $request->ip()
+        );
 
         return redirect()->route('admin.users.index')
             ->with('success', 'Usuario creado exitosamente.');
@@ -129,11 +141,11 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:users,email,' . $user->id],
-            'role_id' => ['required', 'exists:roles,id'],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'address' => ['nullable', 'string', 'max:500'],
+            'first_name' => ['required', 'string', 'max:100'],
+            'last_name'  => ['required', 'string', 'max:100'],
+            'email'      => ['required', 'email', 'max:150', 'unique:users,email,' . $user->id],
+            'role_id'    => ['required', 'exists:roles,id'],
+            'status'     => ['required', 'in:activo,inactivo'],
         ]);
 
         if ($request->filled('password')) {
@@ -144,6 +156,15 @@ class UserController extends Controller
         }
 
         $user->update($validated);
+
+        ActionLog::log(
+            auth()->id(),
+            'UPDATE',
+            'users',
+            $user->id,
+            "Usuario '{$user->full_name}' actualizado por el administrador",
+            $request->ip()
+        );
 
         return redirect()->route('admin.users.index')
             ->with('success', 'Usuario actualizado exitosamente.');
@@ -158,7 +179,18 @@ class UserController extends Controller
             return back()->withErrors(['user' => 'No puedes eliminar tu propia cuenta.']);
         }
 
+        $name = $user->full_name;
+        $userId = $user->id;
         $user->delete();
+
+        ActionLog::log(
+            auth()->id(),
+            'DELETE',
+            'users',
+            $userId,
+            "Usuario '{$name}' eliminado del sistema",
+            request()->ip()
+        );
 
         return redirect()->route('admin.users.index')
             ->with('success', 'Usuario eliminado exitosamente.');

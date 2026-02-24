@@ -7,14 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     protected $fillable = [
+        'category_id',
         'title',
         'author',
         'isbn',
-        'description',
-        'stock',
         'price',
+        'stock',
+        'status',
+        'description',
         'cover_image',
-        'category_id'
     ];
 
     public function category()
@@ -27,8 +28,14 @@ class Book extends Model
         return $this->hasMany(Reservation::class);
     }
 
-    public function isAvailable()
+    public function isAvailable(): bool
     {
-        return $this->stock > 0;
+        return $this->status === 'disponible' && $this->stock > 0;
+    }
+
+    public function syncStatus(): void
+    {
+        $this->status = $this->stock > 0 ? 'disponible' : 'agotado';
+        $this->save();
     }
 }

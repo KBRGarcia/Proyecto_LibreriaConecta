@@ -6,7 +6,7 @@ import StatusBadge from '@/Components/StatusBadge';
 import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Dashboard({ auth, stats, recentReservations, lowStockBooks, myReservations, featuredBooks }) {
-    const isAdmin = auth.user?.role?.name === 'Administrator';
+    const isAdmin = auth.user?.role?.name === 'Administrador';
 
     if (isAdmin) {
         return <AdminDashboard stats={stats} recentReservations={recentReservations} lowStockBooks={lowStockBooks} />;
@@ -64,7 +64,7 @@ function AdminDashboard({ stats, recentReservations, lowStockBooks }) {
                             <div key={reservation.id} className="p-4 flex items-center justify-between">
                                 <div>
                                     <p className="font-medium text-gray-900">{reservation.book?.title}</p>
-                                    <p className="text-sm text-gray-500">{reservation.user?.name}</p>
+                                    <p className="text-sm text-gray-500">{reservation.user?.first_name} {reservation.user?.last_name}</p>
                                 </div>
                                 <StatusBadge status={reservation.status} />
                             </div>
@@ -120,7 +120,7 @@ function ClientDashboard({ auth, stats, myReservations, featuredBooks }) {
                     {/* Welcome */}
                     <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg shadow-lg p-6 mb-8 text-white">
                         <h1 className="text-2xl font-bold mb-2">
-                            Bienvenido, {auth.user.name}
+                            Bienvenido, {auth.user.first_name}
                         </h1>
                         <p className="opacity-90">
                             Explora nuestro catálogo y gestiona tus reservas desde aquí.

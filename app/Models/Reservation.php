@@ -11,11 +11,11 @@ class Reservation extends Model
         'book_id',
         'reservation_date',
         'status',
-        'notes'
+        'notes',
     ];
 
     protected $casts = [
-        'reservation_date' => 'date',
+        'reservation_date' => 'datetime',
     ];
 
     public function user()
