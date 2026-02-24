@@ -53,8 +53,8 @@ export default function Show({ book, relatedBooks }) {
                                     <h1 className="text-3xl font-bold text-gray-900">{book.title}</h1>
                                     <p className="text-xl text-gray-600 mt-1">por {book.author}</p>
                                 </div>
-                                <span className={`px-3 py-1 rounded-full text-sm font-medium ${book.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                                    {book.stock > 0 ? `${book.stock} disponibles` : 'Agotado'}
+                                <span className={`px-3 py-1 rounded-full text-sm font-medium ${book.status === 'disponible' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                    {book.status === 'disponible' ? `${book.stock} disponibles` : 'Agotado'}
                                 </span>
                             </div>
 
@@ -64,7 +64,9 @@ export default function Show({ book, relatedBooks }) {
                                         {book.category.name}
                                     </span>
                                 )}
-                                <span className="text-gray-500 text-sm">ISBN: {book.isbn}</span>
+                                {book.isbn && (
+                                    <span className="text-gray-500 text-sm">ISBN: {book.isbn}</span>
+                                )}
                             </div>
 
                             <div className="mt-6">
@@ -86,14 +88,14 @@ export default function Show({ book, relatedBooks }) {
                                             Volver al catálogo
                                         </SecondaryButton>
                                     </Link>
-                                    {auth?.user && book.stock > 0 && (
+                                    {auth?.user && book.status === 'disponible' && (
                                         <Link href={route('reservations.create', { book_id: book.id })}>
                                             <PrimaryButton>
                                                 Reservar libro
                                             </PrimaryButton>
                                         </Link>
                                     )}
-                                    {!auth?.user && book.stock > 0 && (
+                                    {!auth?.user && book.status === 'disponible' && (
                                         <Link href={route('login')}>
                                             <PrimaryButton>
                                                 Inicia sesión para reservar

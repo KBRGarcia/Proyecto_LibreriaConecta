@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Models\ActionLog;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -38,7 +39,16 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        Category::create($request->validated());
+        $category = Category::create($request->validated());
+
+        ActionLog::log(
+            auth()->id(),
+            'INSERT',
+            'categories',
+            $category->id,
+            "Categoría '{$category->name}' creada",
+            $request->ip()
+        );
 
         return redirect()->route('admin.categories.index')
             ->with('success', 'Categoría creada exitosamente.');
@@ -61,6 +71,15 @@ class CategoryController extends Controller
     {
         $category->update($request->validated());
 
+        ActionLog::log(
+            auth()->id(),
+            'UPDATE',
+            'categories',
+            $category->id,
+            "Categoría '{$category->name}' actualizada",
+            $request->ip()
+        );
+
         return redirect()->route('admin.categories.index')
             ->with('success', 'Categoría actualizada exitosamente.');
     }
@@ -74,7 +93,18 @@ class CategoryController extends Controller
             return back()->withErrors(['category' => 'No se puede eliminar una categoría que tiene libros asociados.']);
         }
 
+        $name       = $category->name;
+        $categoryId = $category->id;
         $category->delete();
+
+        ActionLog::log(
+            auth()->id(),
+            'DELETE',
+            'categories',
+            $categoryId,
+            "Categoría '{$name}' eliminada",
+            request()->ip()
+        );
 
         return redirect()->route('admin.categories.index')
             ->with('success', 'Categoría eliminada exitosamente.');

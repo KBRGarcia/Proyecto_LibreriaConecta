@@ -58,13 +58,13 @@ export default function Create({ categories }) {
                             </div>
 
                             <div>
-                                <InputLabel htmlFor="isbn" value="ISBN" />
+                                <InputLabel htmlFor="isbn" value="ISBN (opcional)" />
                                 <TextInput
                                     id="isbn"
                                     value={data.isbn}
                                     onChange={(e) => setData('isbn', e.target.value)}
                                     className="mt-1 block w-full"
-                                    required
+                                    placeholder="Ej: 9780132350884"
                                 />
                                 <InputError message={errors.isbn} className="mt-2" />
                             </div>

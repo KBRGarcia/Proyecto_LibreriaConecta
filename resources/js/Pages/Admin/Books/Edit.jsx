@@ -11,13 +11,13 @@ import SecondaryButton from '@/Components/SecondaryButton';
 export default function Edit({ book, categories }) {
     const { data, setData, post, processing, errors } = useForm({
         _method: 'PUT',
+        category_id: book.category_id,
         title: book.title,
         author: book.author,
-        isbn: book.isbn,
-        description: book.description || '',
-        stock: book.stock,
+        isbn: book.isbn || '',
         price: book.price,
-        category_id: book.category_id,
+        stock: book.stock,
+        description: book.description || '',
         cover_image: null,
     });
 
@@ -70,13 +70,13 @@ export default function Edit({ book, categories }) {
                             </div>
 
                             <div>
-                                <InputLabel htmlFor="isbn" value="ISBN" />
+                                <InputLabel htmlFor="isbn" value="ISBN (opcional)" />
                                 <TextInput
                                     id="isbn"
                                     value={data.isbn}
                                     onChange={(e) => setData('isbn', e.target.value)}
                                     className="mt-1 block w-full"
-                                    required
+                                    placeholder="Ej: 9780132350884"
                                 />
                                 <InputError message={errors.isbn} className="mt-2" />
                             </div>

@@ -25,9 +25,6 @@ class RoleMiddleware
         }
 
         if ($request->user()->role->name !== $role) {
-            if ($role === 'Administrator') {
-                abort(403, 'Acceso denegado. Se requieren permisos de administrador.');
-            }
             abort(403, 'No tienes permisos para acceder a esta sección.');
         }
 
