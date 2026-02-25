@@ -9,7 +9,6 @@ use App\Models\ActionLog;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -41,7 +40,7 @@ class UserController extends Controller
     public function updatePassword(UpdatePasswordRequest $request)
     {
         $request->user()->update([
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
         ]);
 
         return redirect()->route('profile')
@@ -104,7 +103,7 @@ class UserController extends Controller
             'status'     => ['nullable', 'in:activo,inactivo'],
         ]);
 
-        $validated['password'] = Hash::make($validated['password']);
+        $validated['password'] = $validated['password'];
         $validated['status'] = $validated['status'] ?? 'activo';
 
         $user = User::create($validated);
@@ -152,7 +151,7 @@ class UserController extends Controller
             $request->validate([
                 'password' => ['min:8', 'confirmed'],
             ]);
-            $validated['password'] = Hash::make($request->password);
+            $validated['password'] = $request->password;
         }
 
         $user->update($validated);
