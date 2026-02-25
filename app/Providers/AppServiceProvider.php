@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Hashing\PlainTextFallbackHasher;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,5 +25,11 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
         }
+
+        // Driver temporal: permite contraseñas en texto plano o Bcrypt para evitar
+        // "This password does not use the Bcrypt algorithm" en hosting con datos legacy.
+        Hash::extend('plain_fallback', function () {
+            return new PlainTextFallbackHasher;
+        });
     }
 }
