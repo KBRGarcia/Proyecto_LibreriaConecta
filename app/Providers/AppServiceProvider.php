@@ -31,5 +31,11 @@ class AppServiceProvider extends ServiceProvider
         Hash::extend('plain_fallback', function () {
             return new PlainTextFallbackHasher;
         });
+
+        // En producción forzar plain_fallback aunque la config esté cacheada o .env use bcrypt
+        if ($this->app->environment('production')) {
+            config(['hashing.driver' => 'plain_fallback']);
+            Hash::forgetDrivers();
+        }
     }
 }
