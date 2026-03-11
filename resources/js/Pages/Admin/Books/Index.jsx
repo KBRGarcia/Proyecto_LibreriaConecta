@@ -94,10 +94,10 @@ export default function Index({ books, filters }) {
                                         <StatusBadge status={book.status} />
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <Link href={route('admin.books.edit', book.id)} className="text-indigo-600 hover:text-indigo-900 mr-4">
+                                        <Link href={route('admin.books.edit', book.id)} className="mr-4 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full">
                                             Editar
                                         </Link>
-                                        <button onClick={() => setDeleteModal({ open: true, book })} className="text-red-600 hover:text-red-900">
+                                        <button onClick={() => setDeleteModal({ open: true, book })} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
                                             Eliminar
                                         </button>
                                     </td>

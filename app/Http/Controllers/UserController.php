@@ -195,4 +195,30 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')
             ->with('success', 'Usuario eliminado exitosamente.');
     }
+
+    /**
+     * Admin: Toggle (ban/unban) the status of the specified user.
+     */
+    public function toggleStatus(User $user)
+    {
+        if ($user->isAdmin()) {
+            return back()->with('error', 'Los administradores no pueden ser bloqueados ni desbloqueados.');
+        }
+
+        $newStatus = $user->status === 'activo' ? 'inactivo' : 'activo';
+        $user->update(['status' => $newStatus]);
+
+        $statusText = $newStatus === 'activo' ? 'desbloqueado' : 'bloqueado';
+
+        ActionLog::log(
+            auth()->id(),
+            'UPDATE',
+            'users',
+            $user->id,
+            "Usuario '{$user->full_name}' {$statusText} por el administrador",
+            request()->ip()
+        );
+
+        return back()->with('success', "Usuario {$statusText} exitosamente.");
+    }
 }

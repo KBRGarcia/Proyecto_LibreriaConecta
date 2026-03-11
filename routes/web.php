@@ -93,6 +93,7 @@ Route::middleware(['auth', 'role:Administrador'])->prefix('admin')->name('admin.
     Route::get('/usuarios/{user}/editar', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/usuarios/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/usuarios/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::put('/usuarios/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
 
     // Reservations Management
     Route::get('/reservas', [ReservationController::class, 'adminIndex'])->name('reservations.index');

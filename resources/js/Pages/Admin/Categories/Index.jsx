@@ -56,12 +56,12 @@ export default function Index({ categories }) {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <Link href={route('admin.categories.edit', category.id)} className="text-indigo-600 hover:text-indigo-900 mr-4">
+                                        <Link href={route('admin.categories.edit', category.id)} className="mr-4 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full">
                                             Editar
                                         </Link>
                                         <button
                                             onClick={() => setDeleteModal({ open: true, category })}
-                                            className="text-red-600 hover:text-red-900"
+                                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
                                             disabled={category.books_count > 0}
                                         >
                                             Eliminar

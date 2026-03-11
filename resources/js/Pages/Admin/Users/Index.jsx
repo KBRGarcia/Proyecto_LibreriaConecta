@@ -35,6 +35,13 @@ export default function Index({ users, roles, filters }) {
         });
     };
 
+    const handleToggleStatus = (user) => {
+        router.put(route('admin.users.toggle-status', user.id), {}, {
+            preserveScroll: true,
+            preserveState: true,
+        });
+    };
+
     const statusColor = (status) =>
         status === 'activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
 
@@ -123,10 +130,19 @@ export default function Index({ users, roles, filters }) {
                                         {new Date(user.created_at).toLocaleDateString('es-ES')}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <Link href={route('admin.users.edit', user.id)} className="text-indigo-600 hover:text-indigo-900 mr-4">
+                                        {user.role?.name !== 'Administrador' && (
+                                            <button 
+                                                onClick={() => handleToggleStatus(user)} 
+                                                className={`mr-4 ${user.status === 'activo' ? 'bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full' : 'bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full'}`}
+                                            >
+                                                {user.status === 'activo' ? 'Bloquear' : 'Desbloquear'}
+                                            </button>
+                                        )}
+                                        <Link href={route('admin.users.edit', user.id)} className="mr-4 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full">
                                             Editar
                                         </Link>
-                                        <button onClick={() => setDeleteModal({ open: true, user })} className="text-red-600 hover:text-red-900">
+
+                                        <button onClick={() => setDeleteModal({ open: true, user })} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
                                             Eliminar
                                         </button>
                                     </td>

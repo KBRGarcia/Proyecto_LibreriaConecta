@@ -31,6 +31,19 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+
+            if (!$user->isActivo()) {
+                Auth::guard('web')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->withErrors([
+                    'email' => 'Esta cuenta se encuentra bloqueada (inactiva).',
+                ])->onlyInput('email');
+            }
+
             $request->session()->regenerate();
 
             return redirect()->intended('dashboard');

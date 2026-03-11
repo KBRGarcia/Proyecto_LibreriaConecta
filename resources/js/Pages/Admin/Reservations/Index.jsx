@@ -101,7 +101,7 @@ export default function Index({ reservations, filters }) {
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <button
                                             onClick={() => openEditModal(reservation)}
-                                            className="text-indigo-600 hover:text-indigo-900"
+                                            className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full"
                                         >
                                             Cambiar estado
                                         </button>
