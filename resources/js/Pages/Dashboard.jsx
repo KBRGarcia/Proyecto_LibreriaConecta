@@ -5,49 +5,191 @@ import Card from '@/Components/Card';
 import StatusBadge from '@/Components/StatusBadge';
 import PrimaryButton from '@/Components/PrimaryButton';
 
-export default function Dashboard({ auth, stats, recentReservations, lowStockBooks, myReservations, featuredBooks }) {
+// Chart.js – registrar sólo los componentes necesarios (tree-shaking)
+import {
+    Chart as ChartJS,
+    ArcElement,
+    BarElement,
+    LineElement,
+    PointElement,
+    CategoryScale,
+    LinearScale,
+    Tooltip,
+    Legend,
+    Filler,
+} from 'chart.js';
+import { Doughnut, Bar, Line } from 'react-chartjs-2';
+
+ChartJS.register(
+    ArcElement,
+    BarElement,
+    LineElement,
+    PointElement,
+    CategoryScale,
+    LinearScale,
+    Tooltip,
+    Legend,
+    Filler
+);
+
+// Paleta de colores armónica
+const PALETTE = [
+    'rgba(99, 102, 241, 0.85)',   // indigo
+    'rgba(168, 85, 247, 0.85)',   // purple
+    'rgba(59, 130, 246, 0.85)',   // blue
+    'rgba(16, 185, 129, 0.85)',   // emerald
+    'rgba(245, 158, 11, 0.85)',   // amber
+    'rgba(239, 68, 68, 0.85)',    // red
+    'rgba(20, 184, 166, 0.85)',   // teal
+    'rgba(249, 115, 22, 0.85)',   // orange
+];
+
+const PALETTE_BORDERS = PALETTE.map((c) => c.replace('0.85', '1'));
+
+export default function Dashboard({ auth, stats, recentReservations, lowStockBooks, myReservations, featuredBooks, chartData }) {
     const isAdmin = auth.user?.role?.name === 'Administrador';
 
     if (isAdmin) {
-        return <AdminDashboard stats={stats} recentReservations={recentReservations} lowStockBooks={lowStockBooks} />;
+        return (
+            <AdminDashboard
+                stats={stats}
+                recentReservations={recentReservations}
+                lowStockBooks={lowStockBooks}
+                chartData={chartData}
+            />
+        );
     }
 
     return <ClientDashboard auth={auth} stats={stats} myReservations={myReservations} featuredBooks={featuredBooks} />;
 }
 
-function AdminDashboard({ stats, recentReservations, lowStockBooks }) {
+// ─────────────────────────────────────────────────────────────
+// Admin Dashboard
+// ─────────────────────────────────────────────────────────────
+function AdminDashboard({ stats, recentReservations, lowStockBooks, chartData }) {
+    // Gráfico 1: Libros por categoría (Doughnut)
+    const booksCategoryData = {
+        labels: chartData?.booksByCategory?.map((d) => d.label) ?? [],
+        datasets: [
+            {
+                data: chartData?.booksByCategory?.map((d) => d.value) ?? [],
+                backgroundColor: PALETTE,
+                borderColor: PALETTE_BORDERS,
+                borderWidth: 2,
+                hoverOffset: 8,
+            },
+        ],
+    };
+
+    // Gráfico 2: Usuarios registrados por rol (Bar)
+    const usersRoleData = {
+        labels: chartData?.usersByRole?.map((d) => d.label) ?? [],
+        datasets: [
+            {
+                label: 'Usuarios',
+                data: chartData?.usersByRole?.map((d) => d.value) ?? [],
+                backgroundColor: PALETTE,
+                borderColor: PALETTE_BORDERS,
+                borderWidth: 2,
+                borderRadius: 6,
+            },
+        ],
+    };
+
+    // Gráfico 3: Préstamos activos por mes (Line)
+    const reservationsMonthData = {
+        labels: chartData?.activeReservationsByMonth?.map((d) => d.label) ?? [],
+        datasets: [
+            {
+                label: 'Reservas / Préstamos',
+                data: chartData?.activeReservationsByMonth?.map((d) => d.value) ?? [],
+                backgroundColor: 'rgba(99, 102, 241, 0.15)',
+                borderColor: 'rgba(99, 102, 241, 1)',
+                borderWidth: 2.5,
+                pointBackgroundColor: 'rgba(99, 102, 241, 1)',
+                pointRadius: 5,
+                fill: true,
+                tension: 0.4,
+            },
+        ],
+    };
+
+    const doughnutOptions = {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom', labels: { padding: 16, font: { size: 12 } } },
+            tooltip: { callbacks: { label: (ctx) => ` ${ctx.label}: ${ctx.parsed} libros` } },
+        },
+    };
+
+    const barOptions = {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: (ctx) => ` ${ctx.parsed.y} usuarios` } },
+        },
+        scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 } },
+        },
+    };
+
+    const lineOptions = {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: (ctx) => ` ${ctx.parsed.y} reservas` } },
+        },
+        scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 } },
+        },
+    };
+
     return (
         <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900">Dashboard</h1>}>
             <Head title="Dashboard" />
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <Card
-                    title="Total Libros"
-                    value={stats.totalBooks}
-                    color="indigo"
-                    icon={<BookIcon />}
-                />
-                <Card
-                    title="Total Usuarios"
-                    value={stats.totalUsers}
-                    color="green"
-                    icon={<UsersIcon />}
-                />
-                <Card
-                    title="Reservas Pendientes"
-                    value={stats.pendingReservations}
-                    color="yellow"
-                    icon={<ClockIcon />}
-                />
-                <Card
-                    title="Total Reservas"
-                    value={stats.totalReservations}
-                    color="blue"
-                    icon={<ClipboardIcon />}
-                />
+                <Card title="Total Libros"    value={stats.totalBooks}          color="indigo" icon={<BookIcon />} />
+                <Card title="Total Usuarios"  value={stats.totalUsers}          color="green"  icon={<UsersIcon />} />
+                <Card title="Reservas Pend."  value={stats.pendingReservations} color="yellow" icon={<ClockIcon />} />
+                <Card title="Total Reservas"  value={stats.totalReservations}   color="blue"   icon={<ClipboardIcon />} />
             </div>
 
+            {/* ── Charts ── */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                {/* Libros por Categoría */}
+                <div className="bg-white shadow-sm rounded-lg p-6">
+                    <h2 className="text-base font-semibold text-gray-900 mb-4">Libros por Categoría</h2>
+                    {booksCategoryData.labels.length > 0 ? (
+                        <Doughnut data={booksCategoryData} options={doughnutOptions} />
+                    ) : (
+                        <EmptyChart />
+                    )}
+                </div>
+
+                {/* Usuarios por Rol */}
+                <div className="bg-white shadow-sm rounded-lg p-6">
+                    <h2 className="text-base font-semibold text-gray-900 mb-4">Usuarios Registrados</h2>
+                    {usersRoleData.labels.length > 0 ? (
+                        <Bar data={usersRoleData} options={barOptions} />
+                    ) : (
+                        <EmptyChart />
+                    )}
+                </div>
+
+                {/* Préstamos activos por mes */}
+                <div className="bg-white shadow-sm rounded-lg p-6">
+                    <h2 className="text-base font-semibold text-gray-900 mb-4">Préstamos Activos (6 meses)</h2>
+                    {reservationsMonthData.labels.length > 0 ? (
+                        <Line data={reservationsMonthData} options={lineOptions} />
+                    ) : (
+                        <EmptyChart />
+                    )}
+                </div>
+            </div>
+
+            {/* Tables */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Recent Reservations */}
                 <div className="bg-white shadow-sm rounded-lg">
@@ -107,6 +249,9 @@ function AdminDashboard({ stats, recentReservations, lowStockBooks }) {
     );
 }
 
+// ─────────────────────────────────────────────────────────────
+// Client Dashboard (sin cambios)
+// ─────────────────────────────────────────────────────────────
 function ClientDashboard({ auth, stats, myReservations, featuredBooks }) {
     return (
         <AuthenticatedLayout
@@ -136,24 +281,9 @@ function ClientDashboard({ auth, stats, myReservations, featuredBooks }) {
 
                     {/* Stats */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <Card
-                            title="Mis Reservas"
-                            value={stats?.totalReservations || 0}
-                            color="indigo"
-                            icon={<ClipboardIcon />}
-                        />
-                        <Card
-                            title="Pendientes"
-                            value={stats?.pendingReservations || 0}
-                            color="yellow"
-                            icon={<ClockIcon />}
-                        />
-                        <Card
-                            title="Confirmadas"
-                            value={stats?.confirmedReservations || 0}
-                            color="green"
-                            icon={<CheckIcon />}
-                        />
+                        <Card title="Mis Reservas"  value={stats?.totalReservations || 0}    color="indigo" icon={<ClipboardIcon />} />
+                        <Card title="Pendientes"    value={stats?.pendingReservations || 0}  color="yellow" icon={<ClockIcon />} />
+                        <Card title="Confirmadas"   value={stats?.confirmedReservations || 0} color="green" icon={<CheckIcon />} />
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -234,7 +364,20 @@ function ClientDashboard({ auth, stats, myReservations, featuredBooks }) {
     );
 }
 
+// ─────────────────────────────────────────────────────────────
+// Helper: empty state for charts
+// ─────────────────────────────────────────────────────────────
+function EmptyChart() {
+    return (
+        <div className="flex items-center justify-center h-40 text-gray-400 text-sm">
+            Sin datos disponibles
+        </div>
+    );
+}
+
+// ─────────────────────────────────────────────────────────────
 // Icon Components
+// ─────────────────────────────────────────────────────────────
 function BookIcon() {
     return (
         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -242,7 +385,6 @@ function BookIcon() {
         </svg>
     );
 }
-
 function UsersIcon() {
     return (
         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -250,7 +392,6 @@ function UsersIcon() {
         </svg>
     );
 }
-
 function ClockIcon() {
     return (
         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -258,7 +399,6 @@ function ClockIcon() {
         </svg>
     );
 }
-
 function ClipboardIcon() {
     return (
         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -266,7 +406,6 @@ function ClipboardIcon() {
         </svg>
     );
 }
-
 function CheckIcon() {
     return (
         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

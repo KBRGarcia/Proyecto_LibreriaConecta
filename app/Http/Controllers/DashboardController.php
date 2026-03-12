@@ -50,10 +50,38 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
+        // Chart data: Libros por categoría
+        $booksByCategory = Category::withCount('books')
+            ->orderBy('books_count', 'desc')
+            ->get()
+            ->map(fn($cat) => ['label' => $cat->name, 'value' => $cat->books_count]);
+
+        // Chart data: Usuarios registrados por rol
+        $usersByRole = User::with('role')
+            ->get()
+            ->groupBy(fn($u) => $u->role?->name ?? 'Sin Rol')
+            ->map(fn($group, $roleName) => ['label' => $roleName, 'value' => $group->count()])
+            ->values();
+
+        // Chart data: Préstamos/Reservas activos por mes (últimos 6 meses)
+        $activeReservationsByMonth = Reservation::selectRaw(
+                "DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count"
+            )
+            ->where('created_at', '>=', now()->subMonths(6)->startOfMonth())
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()
+            ->map(fn($r) => ['label' => $r->month, 'value' => $r->count]);
+
         return Inertia::render('Dashboard', [
             'stats' => $stats,
             'recentReservations' => $recentReservations,
             'lowStockBooks' => $lowStockBooks,
+            'chartData' => [
+                'booksByCategory' => $booksByCategory,
+                'usersByRole' => $usersByRole,
+                'activeReservationsByMonth' => $activeReservationsByMonth,
+            ],
         ]);
     }
 
