@@ -145,7 +145,19 @@ function AdminDashboard({ stats, recentReservations, lowStockBooks, chartData })
     };
 
     return (
-        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900">Dashboard</h1>}>
+        <AdminLayout header={
+            <div className="flex justify-between items-center w-full mr-3">
+                <h1 className="text-xl font-semibold text-gray-900">Dashboard</h1>
+                <div className="flex space-x-3">
+                    <a href={route('admin.reports.users.pdf')} target="_blank">
+                        <PrimaryButton type="button">Reporte Usuarios (PDF)</PrimaryButton>
+                    </a>
+                    <a href={route('admin.reports.books.pdf')} target="_blank">
+                        <PrimaryButton type="button">Reporte Libros (PDF)</PrimaryButton>
+                    </a>
+                </div>
+            </div>
+        }>
             <Head title="Dashboard" />
 
             {/* Stats Grid */}

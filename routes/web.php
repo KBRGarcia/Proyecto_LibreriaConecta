@@ -69,6 +69,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:Administrador'])->prefix('admin')->name('admin.')->group(function () {
     // Reports
     Route::get('/reportes', [DashboardController::class, 'reports'])->name('reports');
+    Route::get('/reportes/usuarios/pdf', [\App\Http\Controllers\ReportController::class, 'users'])->name('reports.users.pdf');
+    Route::get('/reportes/libros/pdf', [\App\Http\Controllers\ReportController::class, 'books'])->name('reports.books.pdf');
 
     // Books Management
     Route::get('/libros', [BookController::class, 'adminIndex'])->name('books.index');
