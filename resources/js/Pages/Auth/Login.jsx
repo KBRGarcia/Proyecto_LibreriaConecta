@@ -5,6 +5,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import Swal from 'sweetalert2';
 
 export default function Login({ status }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -21,7 +22,28 @@ export default function Login({ status }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('login'));
+        post(route('login'), {
+            onSuccess: () => {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Sesión Iniciada!',
+                    text: 'Bienvenido de nuevo',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                });
+            },
+            onError: () => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de Autenticación',
+                    text: 'Usuario o contraseña incorrectos',
+                    timer: 3000,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                });
+            }
+        });
     };
 
     return (
