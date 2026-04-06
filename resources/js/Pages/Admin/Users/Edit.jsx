@@ -24,11 +24,11 @@ export default function Edit({ user, roles }) {
     };
 
     return (
-        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900">Editar Usuario</h1>}>
+        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">Editar Usuario</h1>}>
             <Head title="Editar Usuario" />
 
             <div className="max-w-xl">
-                <div className="bg-white shadow-sm rounded-lg">
+                <div className="bg-white dark:bg-gray-800 shadow-sm border border-transparent dark:border-gray-700 rounded-lg transition-colors duration-200">
                     <form onSubmit={submit} className="p-6 space-y-6">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
@@ -103,8 +103,8 @@ export default function Edit({ user, roles }) {
                             </div>
                         </div>
 
-                        <div className="p-4 bg-gray-50 rounded-lg">
-                            <p className="text-sm text-gray-600 mb-4">
+                        <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg transition-colors duration-200">
+                            <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200 mb-4">
                                 Deja los campos de contraseña vacíos si no deseas cambiarla.
                             </p>
                             <div className="space-y-4">
@@ -133,7 +133,7 @@ export default function Edit({ user, roles }) {
                             </div>
                         </div>
 
-                        <div className="flex justify-end space-x-4 pt-4 border-t">
+                        <div className="flex justify-end space-x-4 pt-4 border-t border-gray-200 dark:border-gray-700 transition-colors duration-200">
                             <Link href={route('admin.users.index')}>
                                 <SecondaryButton type="button">Cancelar</SecondaryButton>
                             </Link>

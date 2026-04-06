@@ -16,11 +16,11 @@ export default function Index({ categories }) {
     };
 
     return (
-        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900">Gestión de Categorías</h1>}>
+        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">Gestión de Categorías</h1>}>
             <Head title="Gestión de Categorías" />
 
-            <div className="bg-white shadow-sm rounded-lg">
-                <div className="p-6 border-b border-gray-200">
+            <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-transparent dark:border-gray-700 transition-colors duration-200">
+                <div className="p-6 border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
                     <div className="flex justify-between items-center">
                         <p className="text-gray-600">Organiza los libros por categorías</p>
                         <Link href={route('admin.categories.create')}>
@@ -30,23 +30,23 @@ export default function Index({ categories }) {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
+                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-200">
+                        <thead className="bg-gray-50 dark:bg-gray-700/50 transition-colors duration-200">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nombre</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Descripción</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Libros</th>
-                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Nombre</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Descripción</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Libros</th>
+                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-200">
                             {categories.data.map((category) => (
                                 <tr key={category.id}>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-gray-900">{category.name}</div>
+                                        <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{category.name}</div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-500 max-w-xs truncate">
+                                        <div className="text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">
                                             {category.description || '-'}
                                         </div>
                                     </td>
@@ -73,19 +73,19 @@ export default function Index({ categories }) {
                     </table>
                 </div>
 
-                <div className="p-6 border-t border-gray-200">
+                <div className="p-6 border-t border-gray-200 dark:border-gray-700 transition-colors duration-200">
                     <Pagination links={categories.links} />
                 </div>
             </div>
 
             <Modal show={deleteModal.open} onClose={() => setDeleteModal({ open: false, category: null })}>
                 <div className="p-6">
-                    <h3 className="text-lg font-medium text-gray-900">Eliminar categoría</h3>
-                    <p className="mt-2 text-sm text-gray-500">
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Eliminar categoría</h3>
+                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                         ¿Estás seguro de que deseas eliminar "{deleteModal.category?.name}"?
                     </p>
                     <div className="mt-4 flex justify-end space-x-4">
-                        <button onClick={() => setDeleteModal({ open: false, category: null })} className="px-4 py-2 text-sm text-gray-700">
+                        <button onClick={() => setDeleteModal({ open: false, category: null })} className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">
                             Cancelar
                         </button>
                         <DangerButton onClick={handleDelete}>Eliminar</DangerButton>

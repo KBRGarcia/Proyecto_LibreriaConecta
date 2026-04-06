@@ -15,11 +15,11 @@ export default function Modal({ show, onClose, maxWidth = 'md', children }) {
         <div className="fixed inset-0 z-50 overflow-y-auto">
             <div className="flex min-h-screen items-center justify-center p-4">
                 <div
-                    className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                    className="fixed inset-0 bg-gray-500 bg-opacity-75 dark:bg-gray-900 dark:bg-opacity-75 transition-opacity"
                     onClick={onClose}
                 />
                 <div
-                    className={`relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all w-full ${maxWidthClasses[maxWidth]}`}
+                    className={`relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow-xl transition-all w-full border border-transparent dark:border-gray-700 duration-200 ${maxWidthClasses[maxWidth]}`}
                 >
                     {children}
                 </div>

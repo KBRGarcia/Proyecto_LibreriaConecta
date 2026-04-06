@@ -12,12 +12,12 @@ export default function PublicLayout({ children }) {
                     <div className="flex justify-between h-16">
                         <div className="flex items-center">
                             <Link href="/" className="flex items-center">
-                                <span className="text-2xl font-bold text-indigo-600">LibroConecta</span>
+                                <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 transition-colors duration-200">LibroConecta</span>
                             </Link>
                             <div className="hidden sm:ml-10 sm:flex sm:space-x-8">
                                 <Link
                                     href={route('books.index')}
-                                    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-transparent hover:border-indigo-500"
+                                    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 dark:text-gray-100 border-b-2 border-transparent hover:border-indigo-500 dark:hover:border-indigo-400 transition-colors duration-200"
                                 >
                                     Catálogo
                                 </Link>

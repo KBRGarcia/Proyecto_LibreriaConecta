@@ -43,11 +43,11 @@ export default function Index({ reservations, filters }) {
     };
 
     return (
-        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900">Gestión de Reservas</h1>}>
+        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">Gestión de Reservas</h1>}>
             <Head title="Gestión de Reservas" />
 
-            <div className="bg-white shadow-sm rounded-lg">
-                <div className="p-6 border-b border-gray-200">
+            <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-transparent dark:border-gray-700 transition-colors duration-200">
+                <div className="p-6 border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
                     <div className="flex flex-col sm:flex-row gap-4">
                         <SearchInput
                             value={search}
@@ -69,30 +69,30 @@ export default function Index({ reservations, filters }) {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
+                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-200">
+                        <thead className="bg-gray-50 dark:bg-gray-700/50 transition-colors duration-200">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Usuario</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Libro</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha reserva</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
-                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Usuario</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Libro</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Fecha reserva</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Estado</th>
+                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-200">
                             {reservations.data.map((reservation) => (
                                 <tr key={reservation.id}>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-gray-900">
+                                        <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                                             {reservation.user?.first_name} {reservation.user?.last_name}
                                         </div>
-                                        <div className="text-sm text-gray-500">{reservation.user?.email}</div>
+                                        <div className="text-sm text-gray-500 dark:text-gray-400">{reservation.user?.email}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-gray-900">{reservation.book?.title}</div>
-                                        <div className="text-sm text-gray-500">{reservation.book?.author}</div>
+                                        <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{reservation.book?.title}</div>
+                                        <div className="text-sm text-gray-500 dark:text-gray-400">{reservation.book?.author}</div>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                         {new Date(reservation.reservation_date).toLocaleDateString('es-ES')}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
@@ -112,15 +112,15 @@ export default function Index({ reservations, filters }) {
                     </table>
                 </div>
 
-                <div className="p-6 border-t border-gray-200">
+                <div className="p-6 border-t border-gray-200 dark:border-gray-700 transition-colors duration-200">
                     <Pagination links={reservations.links} />
                 </div>
             </div>
 
             <Modal show={editModal.open} onClose={() => setEditModal({ open: false, reservation: null, status: '' })}>
                 <div className="p-6">
-                    <h3 className="text-lg font-medium text-gray-900">Cambiar estado de reserva</h3>
-                    <p className="mt-2 text-sm text-gray-500">
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Cambiar estado de reserva</h3>
+                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                         Reserva #{editModal.reservation?.id} - {editModal.reservation?.book?.title}
                     </p>
                     <div className="mt-4">

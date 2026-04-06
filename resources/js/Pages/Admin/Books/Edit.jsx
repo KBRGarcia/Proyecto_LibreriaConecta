@@ -27,11 +27,11 @@ export default function Edit({ book, categories }) {
     };
 
     return (
-        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900">Editar Libro</h1>}>
+        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">Editar Libro</h1>}>
             <Head title="Editar Libro" />
 
             <div className="max-w-2xl">
-                <div className="bg-white shadow-sm rounded-lg">
+                <div className="bg-white dark:bg-gray-800 shadow-sm border border-transparent dark:border-gray-700 rounded-lg transition-colors duration-200">
                     <form onSubmit={submit} className="p-6 space-y-6">
                         {book.cover_image && (
                             <div className="mb-4">
@@ -152,7 +152,7 @@ export default function Edit({ book, categories }) {
                             </div>
                         </div>
 
-                        <div className="flex justify-end space-x-4 pt-4 border-t">
+                        <div className="flex justify-end space-x-4 pt-4 border-t border-gray-200 dark:border-gray-700 transition-colors duration-200">
                             <Link href={route('admin.books.index')}>
                                 <SecondaryButton type="button">Cancelar</SecondaryButton>
                             </Link>

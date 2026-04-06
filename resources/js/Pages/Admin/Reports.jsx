@@ -16,32 +16,32 @@ export default function Reports({ reservationsByStatus, booksByCategory, monthly
     };
 
     return (
-        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900">Reportes y Estadísticas</h1>}>
+        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">Reportes y Estadísticas</h1>}>
             <Head title="Reportes" />
 
             <div className="space-y-6">
                 {/* Reservations by Status */}
-                <div className="bg-white shadow-sm rounded-lg p-6">
-                    <h2 className="text-lg font-semibold text-gray-900 mb-4">Reservas por Estado</h2>
+                <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6 border border-transparent dark:border-gray-700 transition-colors duration-200">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 transition-colors duration-200">Reservas por Estado</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {reservationsByStatus.map((item) => (
-                            <div key={item.status} className="text-center p-4 bg-gray-50 rounded-lg">
+                            <div key={item.status} className="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg transition-colors duration-200">
                                 <div className={`inline-flex px-3 py-1 rounded-full text-sm font-medium mb-2 ${statusColors[item.status]}`}>
                                     {statusLabels[item.status]}
                                 </div>
-                                <p className="text-3xl font-bold text-gray-900">{item.count}</p>
+                                <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">{item.count}</p>
                             </div>
                         ))}
                     </div>
                 </div>
 
                 {/* Books by Category */}
-                <div className="bg-white shadow-sm rounded-lg p-6">
-                    <h2 className="text-lg font-semibold text-gray-900 mb-4">Libros por Categoría</h2>
+                <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6 border border-transparent dark:border-gray-700 transition-colors duration-200">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 transition-colors duration-200">Libros por Categoría</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {booksByCategory.map((category) => (
-                            <div key={category.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                                <span className="font-medium text-gray-700">{category.name}</span>
+                            <div key={category.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg transition-colors duration-200">
+                                <span className="font-medium text-gray-700 dark:text-gray-200">{category.name}</span>
                                 <span className="inline-flex px-3 py-1 rounded-full text-sm font-semibold bg-indigo-100 text-indigo-800">
                                     {category.books_count} libros
                                 </span>
@@ -51,28 +51,28 @@ export default function Reports({ reservationsByStatus, booksByCategory, monthly
                 </div>
 
                 {/* Top Books */}
-                <div className="bg-white shadow-sm rounded-lg p-6">
-                    <h2 className="text-lg font-semibold text-gray-900 mb-4">Libros Más Reservados</h2>
+                <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6 border border-transparent dark:border-gray-700 transition-colors duration-200">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 transition-colors duration-200">Libros Más Reservados</h2>
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-200">
+                            <thead className="bg-gray-50 dark:bg-gray-700/50 transition-colors duration-200">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">#</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Libro</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Autor</th>
-                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Reservas</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">#</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Libro</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Autor</th>
+                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Reservas</th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-200">
                                 {topBooks.map((book, index) => (
                                     <tr key={book.id}>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             {index + 1}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
                                             {book.title}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             {book.author}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-semibold text-indigo-600">
@@ -86,15 +86,15 @@ export default function Reports({ reservationsByStatus, booksByCategory, monthly
                 </div>
 
                 {/* Monthly Reservations */}
-                <div className="bg-white shadow-sm rounded-lg p-6">
-                    <h2 className="text-lg font-semibold text-gray-900 mb-4">Reservas Mensuales</h2>
+                <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6 border border-transparent dark:border-gray-700 transition-colors duration-200">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 transition-colors duration-200">Reservas Mensuales</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                         {monthlyReservations.map((item, index) => {
                             const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
                             return (
-                                <div key={index} className="text-center p-4 bg-gray-50 rounded-lg">
-                                    <p className="text-sm text-gray-500">{monthNames[item.month - 1]} {item.year}</p>
-                                    <p className="text-2xl font-bold text-gray-900 mt-1">{item.count}</p>
+                                <div key={index} className="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg transition-colors duration-200">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">{monthNames[item.month - 1]} {item.year}</p>
+                                    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1">{item.count}</p>
                                 </div>
                             );
                         })}

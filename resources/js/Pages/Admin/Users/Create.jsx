@@ -24,11 +24,11 @@ export default function Create({ roles }) {
     };
 
     return (
-        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900">Agregar Usuario</h1>}>
+        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">Agregar Usuario</h1>}>
             <Head title="Agregar Usuario" />
 
             <div className="max-w-xl">
-                <div className="bg-white shadow-sm rounded-lg">
+                <div className="bg-white dark:bg-gray-800 shadow-sm border border-transparent dark:border-gray-700 rounded-lg transition-colors duration-200">
                     <form onSubmit={submit} className="p-6 space-y-6">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
@@ -127,7 +127,7 @@ export default function Create({ roles }) {
                             />
                         </div>
 
-                        <div className="flex justify-end space-x-4 pt-4 border-t">
+                        <div className="flex justify-end space-x-4 pt-4 border-t border-gray-200 dark:border-gray-700 transition-colors duration-200">
                             <Link href={route('admin.users.index')}>
                                 <SecondaryButton type="button">Cancelar</SecondaryButton>
                             </Link>

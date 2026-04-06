@@ -9,7 +9,7 @@ export default function Card({ title, value, icon, color = 'indigo', description
     };
 
     return (
-        <div className="bg-white overflow-hidden shadow-sm rounded-lg">
+        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg border border-transparent dark:border-gray-700 transition-colors duration-200">
             <div className="p-5">
                 <div className="flex items-center">
                     <div className={`flex-shrink-0 ${colors[color]} rounded-md p-3`}>
@@ -17,16 +17,16 @@ export default function Card({ title, value, icon, color = 'indigo', description
                     </div>
                     <div className="ml-5 w-0 flex-1">
                         <dl>
-                            <dt className="text-sm font-medium text-gray-500 truncate">
+                            <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
                                 {title}
                             </dt>
                             <dd className="flex items-baseline">
-                                <div className="text-2xl font-semibold text-gray-900">
+                                <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
                                     {value}
                                 </div>
                             </dd>
                             {description && (
-                                <dd className="text-sm text-gray-500 mt-1">
+                                <dd className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                                     {description}
                                 </dd>
                             )}

@@ -34,14 +34,14 @@ export default function Index({ books, categories, filters }) {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900">Catálogo de Libros</h1>
-                    <p className="mt-2 text-gray-600">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Catálogo de Libros</h1>
+                    <p className="mt-2 text-gray-600 dark:text-gray-400">
                         Explora nuestra colección y reserva tus libros favoritos
                     </p>
                 </div>
 
                 {/* Filters */}
-                <div className="bg-white p-4 rounded-lg shadow-sm mb-8">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm mb-8 transition-colors duration-200">
                     <div className="flex flex-col sm:flex-row gap-4">
                         <SearchInput
                             value={search}

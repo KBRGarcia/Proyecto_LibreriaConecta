@@ -43,25 +43,25 @@ export default function Index({ users, roles, filters }) {
     };
 
     const statusColor = (status) =>
-        status === 'activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+        status === 'activo' ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300';
 
     const roleColor = (roleName) => {
         const colors = {
-            'Administrador': 'bg-purple-100 text-purple-800',
-            'Cliente':       'bg-blue-100 text-blue-800',
-            'Empleado':      'bg-yellow-100 text-yellow-800',
-            'Supervisor':    'bg-indigo-100 text-indigo-800',
-            'Invitado':      'bg-gray-100 text-gray-800',
+            'Administrador': 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300',
+            'Cliente':       'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300',
+            'Empleado':      'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300',
+            'Supervisor':    'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300',
+            'Invitado':      'bg-gray-100 text-gray-800 dark:bg-gray-800/40 dark:text-gray-300',
         };
-        return colors[roleName] || 'bg-gray-100 text-gray-800';
+        return colors[roleName] || 'bg-gray-100 text-gray-800 dark:bg-gray-800/40 dark:text-gray-300';
     };
 
     return (
-        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900">Gestión de Usuarios</h1>}>
+        <AdminLayout header={<h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">Gestión de Usuarios</h1>}>
             <Head title="Gestión de Usuarios" />
 
-            <div className="bg-white shadow-sm rounded-lg">
-                <div className="p-6 border-b border-gray-200">
+            <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-transparent dark:border-gray-700 transition-colors duration-200">
+                <div className="p-6 border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                             <SearchInput
@@ -88,31 +88,31 @@ export default function Index({ users, roles, filters }) {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
+                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-200">
+                        <thead className="bg-gray-50 dark:bg-gray-700/50 transition-colors duration-200">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Usuario</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rol</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Registrado</th>
-                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Usuario</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Rol</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Estado</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Registrado</th>
+                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-200">
                             {users.data.map((user) => (
                                 <tr key={user.id}>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
-                                            <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                                                <span className="text-indigo-600 font-medium text-sm">
+                                            <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 dark:bg-indigo-900/40 rounded-full flex items-center justify-center transition-colors duration-200">
+                                                <span className="text-indigo-600 dark:text-indigo-400 font-medium text-sm">
                                                     {user.first_name?.charAt(0).toUpperCase()}
                                                 </span>
                                             </div>
                                             <div className="ml-4">
-                                                <div className="text-sm font-medium text-gray-900">
+                                                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                                                     {user.first_name} {user.last_name}
                                                 </div>
-                                                <div className="text-sm text-gray-500">{user.email}</div>
+                                                <div className="text-sm text-gray-500 dark:text-gray-400">{user.email}</div>
                                             </div>
                                         </div>
                                     </td>
@@ -126,7 +126,7 @@ export default function Index({ users, roles, filters }) {
                                             {user.status === 'activo' ? 'Activo' : 'Inactivo'}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                         {new Date(user.created_at).toLocaleDateString('es-ES')}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -152,15 +152,15 @@ export default function Index({ users, roles, filters }) {
                     </table>
                 </div>
 
-                <div className="p-6 border-t border-gray-200">
+                <div className="p-6 border-t border-gray-200 dark:border-gray-700 transition-colors duration-200">
                     <Pagination links={users.links} />
                 </div>
             </div>
 
             <Modal show={deleteModal.open} onClose={() => setDeleteModal({ open: false, user: null })}>
                 <div className="p-6">
-                    <h3 className="text-lg font-medium text-gray-900">Eliminar usuario</h3>
-                    <p className="mt-2 text-sm text-gray-500">
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Eliminar usuario</h3>
+                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                         ¿Estás seguro de que deseas eliminar a "{deleteModal.user?.first_name} {deleteModal.user?.last_name}"?
                         Esta acción no se puede deshacer.
                     </p>

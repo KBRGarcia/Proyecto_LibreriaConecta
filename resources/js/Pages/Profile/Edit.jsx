@@ -33,19 +33,19 @@ export default function Edit({ auth, user }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Mi Perfil</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight transition-colors duration-200">Mi Perfil</h2>}
         >
             <Head title="Mi Perfil" />
 
             <div className="py-12">
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     {/* Profile Information */}
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg border border-transparent dark:border-gray-700 transition-colors duration-200">
                         <div className="p-6">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
                                 Información del Perfil
                             </h3>
-                            <p className="text-sm text-gray-600 mb-6">
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
                                 Actualiza tu información personal y datos de contacto.
                             </p>
 
@@ -99,24 +99,24 @@ export default function Edit({ auth, user }) {
                     </div>
 
                     {/* Role Information */}
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg border border-transparent dark:border-gray-700 transition-colors duration-200">
                         <div className="p-6">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
                                 Información de Cuenta
                             </h3>
-                            <p className="text-sm text-gray-600 mb-4">
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
                                 Detalles de tu cuenta y rol en el sistema.
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="p-4 bg-gray-50 rounded-lg">
-                                    <p className="text-sm text-gray-500">Rol</p>
-                                    <p className="font-medium text-gray-900">
+                                <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg transition-colors duration-200">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Rol</p>
+                                    <p className="font-medium text-gray-900 dark:text-gray-100">
                                         {user.role?.name || 'Sin rol'}
                                     </p>
                                 </div>
-                                <div className="p-4 bg-gray-50 rounded-lg">
-                                    <p className="text-sm text-gray-500">Miembro desde</p>
-                                    <p className="font-medium text-gray-900">
+                                <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg transition-colors duration-200">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Miembro desde</p>
+                                    <p className="font-medium text-gray-900 dark:text-gray-100">
                                         {new Date(user.created_at).toLocaleDateString('es-ES', {
                                             year: 'numeric',
                                             month: 'long',
@@ -129,9 +129,9 @@ export default function Edit({ auth, user }) {
                     </div>
 
                     {/* Change Password */}
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg border border-transparent dark:border-gray-700 transition-colors duration-200">
                         <div className="p-6">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
                                 Cambiar Contraseña
                             </h3>
                             <p className="text-sm text-gray-600 mb-6">

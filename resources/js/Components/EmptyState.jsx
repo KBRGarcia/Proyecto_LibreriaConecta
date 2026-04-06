@@ -1,14 +1,14 @@
 export default function EmptyState({ title, description, icon, action }) {
     return (
-        <div className="text-center py-12">
+        <div className="text-center py-12 transition-colors duration-200">
             {icon && (
-                <div className="mx-auto h-12 w-12 text-gray-400 mb-4">
+                <div className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4">
                     {icon}
                 </div>
             )}
-            <h3 className="mt-2 text-sm font-semibold text-gray-900">{title}</h3>
+            <h3 className="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
             {description && (
-                <p className="mt-1 text-sm text-gray-500">{description}</p>
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{description}</p>
             )}
             {action && (
                 <div className="mt-6">

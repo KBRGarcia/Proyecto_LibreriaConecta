@@ -30,7 +30,9 @@ export default function Login({ status }) {
                     text: 'Bienvenido de nuevo',
                     timer: 2000,
                     showConfirmButton: false,
-                    timerProgressBar: true
+                    timerProgressBar: true,
+                    background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#ffffff',
+                    color: document.documentElement.classList.contains('dark') ? '#f3f4f6' : '#111827'
                 });
             },
             onError: () => {
@@ -40,7 +42,9 @@ export default function Login({ status }) {
                     text: 'Usuario o contraseña incorrectos',
                     timer: 3000,
                     showConfirmButton: false,
-                    timerProgressBar: true
+                    timerProgressBar: true,
+                    background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#ffffff',
+                    color: document.documentElement.classList.contains('dark') ? '#f3f4f6' : '#111827'
                 });
             }
         });
@@ -57,8 +61,8 @@ export default function Login({ status }) {
             )}
 
             <div className="mb-6 text-center">
-                <h2 className="text-2xl font-bold text-gray-900">Bienvenido</h2>
-                <p className="mt-1 text-sm text-gray-600">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Bienvenido</h2>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Inicia sesión para acceder a tu cuenta
                 </p>
             </div>
@@ -100,9 +104,9 @@ export default function Login({ status }) {
                             name="remember"
                             checked={data.remember}
                             onChange={(e) => setData('remember', e.target.checked)}
-                            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                            className="rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 text-indigo-600 shadow-sm focus:ring-indigo-500"
                         />
-                        <span className="ml-2 text-sm text-gray-600">Recordarme</span>
+                        <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">Recordarme</span>
                     </label>
                 </div>
 
@@ -115,7 +119,7 @@ export default function Login({ status }) {
                 <div className="mt-6 text-center">
                     <Link
                         href={route('books.index')}
-                        className="text-sm text-indigo-600 hover:text-indigo-900"
+                        className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300"
                     >
                         Ver catálogo sin iniciar sesión
                     </Link>
@@ -123,9 +127,9 @@ export default function Login({ status }) {
             </form>
 
             {/* Test Credentials */}
-            <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-                <h3 className="text-sm font-semibold text-gray-700 mb-2">Credenciales de prueba:</h3>
-                <div className="text-xs text-gray-600 space-y-1">
+            <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-transparent dark:border-gray-600 transition-colors duration-200">
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Credenciales de prueba:</h3>
+                <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
                     <p><strong>Admin:</strong> admin@libroconecta.com / 12345678</p>
                     <p><strong>Cliente:</strong> maria@correo.com / 12345678</p>
                 </div>
