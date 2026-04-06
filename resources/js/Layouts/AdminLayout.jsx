@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
+import useTheme from '@/Hooks/useTheme';
 
 export default function AdminLayout({ header, children }) {
     const { auth, flash } = usePage().props;
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const { theme, toggleTheme } = useTheme();
 
     const navigation = [
         { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon },
@@ -16,7 +19,7 @@ export default function AdminLayout({ header, children }) {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
             {/* Mobile sidebar backdrop */}
             {sidebarOpen && (
                 <div
@@ -26,8 +29,8 @@ export default function AdminLayout({ header, children }) {
             )}
 
             {/* Sidebar */}
-            <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-indigo-700 transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 ease-in-out`}>
-                <div className="flex items-center justify-between h-16 px-4 bg-indigo-800">
+            <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-indigo-700 dark:bg-gray-800 transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-all duration-300 ease-in-out`}>
+                <div className="flex items-center justify-between h-16 px-4 bg-indigo-800 dark:bg-gray-900">
                     <Link href={route('dashboard')} className="text-xl font-bold text-white">
                         LibroConecta
                     </Link>
@@ -68,7 +71,7 @@ export default function AdminLayout({ header, children }) {
             {/* Main content */}
             <div className="lg:pl-64">
                 {/* Top bar */}
-                <div className="sticky top-0 z-10 flex h-16 bg-white shadow">
+                <div className="sticky top-0 z-10 flex h-16 bg-white dark:bg-gray-800 shadow transition-colors duration-200">
                     <button
                         className="px-4 text-gray-500 lg:hidden"
                         onClick={() => setSidebarOpen(true)}
@@ -78,24 +81,57 @@ export default function AdminLayout({ header, children }) {
                         </svg>
                     </button>
                     <div className="flex-1 flex justify-between px-4">
-                        <div className="flex-1 flex items-center">
+                        <div className="flex-1 flex items-center text-gray-900 dark:text-gray-100">
                             {header}
                         </div>
-                        <div className="flex items-center space-x-4">
-                            <Link
-                                href={route('profile')}
-                                className="text-sm text-gray-700 hover:text-indigo-600"
+                        <div className="flex items-center space-x-4 relative">
+                            {/* Profile Dropdown */}
+                            <button
+                                onClick={() => setDropdownOpen(!dropdownOpen)}
+                                className="flex items-center space-x-2 focus:outline-none"
                             >
-                                {auth?.user?.first_name} {auth?.user?.last_name}
-                            </Link>
-                            <Link
-                                href={route('logout')}
-                                method="post"
-                                as="button"
-                                className="text-sm text-gray-500 hover:text-gray-700"
-                            >
-                                Salir
-                            </Link>
+                                {auth?.user?.profile_photo_url ? (
+                                    <img className="h-8 w-8 rounded-full object-cover" src={auth.user.profile_photo_url} alt={auth.user.first_name} />
+                                ) : (
+                                    <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center text-indigo-500 dark:text-indigo-300 font-bold">
+                                        {auth?.user?.first_name?.charAt(0)}{auth?.user?.last_name?.charAt(0)}
+                                    </div>
+                                )}
+                            </button>
+
+                            {/* Dropdown Menu */}
+                            {dropdownOpen && (
+                                <>
+                                    <div className="fixed inset-0 z-10" onClick={() => setDropdownOpen(false)}></div>
+                                    <div className="absolute right-0 top-10 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-20 border dark:border-gray-700">
+                                        <div className="px-4 py-2 border-b dark:border-gray-700">
+                                            <p className="text-sm text-gray-700 dark:text-gray-300 font-medium truncate">{auth?.user?.first_name} {auth?.user?.last_name}</p>
+                                        </div>
+                                        <Link
+                                            href={route('profile')}
+                                            onClick={() => setDropdownOpen(false)}
+                                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                        >
+                                            Mi Perfil
+                                        </Link>
+                                        <button
+                                            onClick={() => { toggleTheme(); setDropdownOpen(false); }}
+                                            className="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                        >
+                                            {theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}
+                                        </button>
+                                        <Link
+                                            href={route('logout')}
+                                            method="post"
+                                            as="button"
+                                            onClick={() => setDropdownOpen(false)}
+                                            className="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                        >
+                                            Salir
+                                        </Link>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

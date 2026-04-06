@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
+import useTheme from '@/Hooks/useTheme';
 
 export default function Authenticated({ user, header, children }) {
     const { auth } = usePage().props;
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const { theme, toggleTheme } = useTheme();
     const currentUser = auth?.user || user;
     const isAdmin = currentUser?.role?.name === 'Administrador';
 
@@ -19,14 +22,14 @@ export default function Authenticated({ user, header, children }) {
         ];
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <nav className="bg-white border-b border-gray-100">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
+            <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 transition-colors duration-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
                                 <Link href="/dashboard">
-                                    <h2 className="text-xl font-bold text-indigo-600">LibroConecta</h2>
+                                    <h2 className="text-xl font-bold text-indigo-600 dark:text-indigo-400">LibroConecta</h2>
                                 </Link>
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -34,7 +37,7 @@ export default function Authenticated({ user, header, children }) {
                                     <Link
                                         key={item.name}
                                         href={item.href}
-                                        className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                                        className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:text-gray-700 dark:focus:text-gray-200 focus:border-gray-300 dark:focus:border-gray-600 transition duration-150 ease-in-out"
                                     >
                                         {item.name}
                                     </Link>
@@ -46,7 +49,7 @@ export default function Authenticated({ user, header, children }) {
                             {isAdmin && (
                                 <Link
                                     href={route('admin.books.index')}
-                                    className="mr-4 inline-flex items-center px-3 py-1.5 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 transition"
+                                    className="mr-4 inline-flex items-center px-3 py-1.5 border border-indigo-600 dark:border-indigo-400 text-sm font-medium rounded-md text-indigo-600 dark:text-indigo-400 bg-white dark:bg-gray-800 hover:bg-indigo-50 dark:hover:bg-gray-700 transition"
                                 >
                                     <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -56,20 +59,53 @@ export default function Authenticated({ user, header, children }) {
                                 </Link>
                             )}
                             <div className="ml-3 relative flex items-center space-x-4">
-                                <Link
-                                    href={route('profile')}
-                                    className="text-sm text-gray-700 hover:text-indigo-600"
+                                {/* Profile Dropdown */}
+                                <button
+                                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                                    className="flex items-center space-x-2 focus:outline-none"
                                 >
-                                    {currentUser?.first_name} {currentUser?.last_name}
-                                </Link>
-                                <Link
-                                    href={route('logout')}
-                                    method="post"
-                                    as="button"
-                                    className="text-sm text-gray-600 hover:text-gray-900"
-                                >
-                                    Salir
-                                </Link>
+                                    {currentUser?.profile_photo_url ? (
+                                        <img className="h-8 w-8 rounded-full object-cover" src={currentUser.profile_photo_url} alt={currentUser.first_name} />
+                                    ) : (
+                                        <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center text-indigo-500 dark:text-indigo-300 font-bold">
+                                            {currentUser?.first_name?.charAt(0)}{currentUser?.last_name?.charAt(0)}
+                                        </div>
+                                    )}
+                                </button>
+
+                                {/* Dropdown Menu */}
+                                {dropdownOpen && (
+                                    <>
+                                        <div className="fixed inset-0 z-10" onClick={() => setDropdownOpen(false)}></div>
+                                        <div className="absolute right-0 top-10 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-20 border dark:border-gray-700">
+                                            <div className="px-4 py-2 border-b dark:border-gray-700">
+                                                <p className="text-sm text-gray-700 dark:text-gray-300 font-medium truncate">{currentUser?.first_name} {currentUser?.last_name}</p>
+                                            </div>
+                                            <Link
+                                                href={route('profile')}
+                                                onClick={() => setDropdownOpen(false)}
+                                                className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            >
+                                                Mi Perfil
+                                            </Link>
+                                            <button
+                                                onClick={() => { toggleTheme(); setDropdownOpen(false); }}
+                                                className="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            >
+                                                {theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}
+                                            </button>
+                                            <Link
+                                                href={route('logout')}
+                                                method="post"
+                                                as="button"
+                                                onClick={() => setDropdownOpen(false)}
+                                                className="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            >
+                                                Salir
+                                            </Link>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </div>
 
@@ -120,24 +156,30 @@ export default function Authenticated({ user, header, children }) {
                         )}
                     </div>
 
-                    <div className="pt-4 pb-1 border-t border-gray-200">
+                    <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-700">
                         <div className="px-4">
-                            <div className="font-medium text-base text-gray-800">{currentUser?.first_name} {currentUser?.last_name}</div>
-                            <div className="font-medium text-sm text-gray-500">{currentUser?.email}</div>
+                            <div className="font-medium text-base text-gray-800 dark:text-gray-200">{currentUser?.first_name} {currentUser?.last_name}</div>
+                            <div className="font-medium text-sm text-gray-500 dark:text-gray-400">{currentUser?.email}</div>
                         </div>
 
                         <div className="mt-3 space-y-1">
                             <Link
                                 href={route('profile')}
-                                className="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300"
+                                className="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                             >
                                 Mi Perfil
                             </Link>
+                            <button
+                                onClick={toggleTheme}
+                                className="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none transition duration-150 ease-in-out"
+                            >
+                                {theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}
+                            </button>
                             <Link
                                 href={route('logout')}
                                 method="post"
                                 as="button"
-                                className="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out"
+                                className="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none transition duration-150 ease-in-out"
                             >
                                 Cerrar Sesión
                             </Link>
@@ -147,8 +189,8 @@ export default function Authenticated({ user, header, children }) {
             </nav>
 
             {header && (
-                <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
+                <header className="bg-white dark:bg-gray-800 shadow transition-colors duration-200">
+                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100">{header}</div>
                 </header>
             )}
 
