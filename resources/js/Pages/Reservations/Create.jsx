@@ -22,21 +22,21 @@ export default function Create({ auth, book }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Nueva Reserva</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Nueva Reserva</h2>}
         >
             <Head title="Nueva Reserva" />
 
             <div className="py-12">
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6">
                             {book ? (
-                                <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                                <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
                                         Libro seleccionado
                                     </h3>
                                     <div className="flex items-center space-x-4">
-                                        <div className="w-16 h-20 bg-gray-200 rounded overflow-hidden flex-shrink-0">
+                                        <div className="w-16 h-20 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden flex-shrink-0">
                                             {book.cover_image ? (
                                                 <img
                                                     src={`/storage/${book.cover_image}`}
@@ -52,19 +52,19 @@ export default function Create({ auth, book }) {
                                             )}
                                         </div>
                                         <div>
-                                            <p className="font-medium text-gray-900">{book.title}</p>
-                                            <p className="text-sm text-gray-600">{book.author}</p>
-                                            <p className="text-sm text-indigo-600 font-semibold mt-1">
+                                            <p className="font-medium text-gray-900 dark:text-gray-100">{book.title}</p>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">{book.author}</p>
+                                            <p className="text-sm text-indigo-600 dark:text-indigo-400 font-semibold mt-1">
                                                 ${parseFloat(book.price).toFixed(2)}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             ) : (
-                                <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                                    <p className="text-yellow-800">
+                                <div className="mb-6 p-4 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800/50 rounded-lg">
+                                    <p className="text-yellow-800 dark:text-yellow-500">
                                         No has seleccionado un libro.{' '}
-                                        <Link href={route('books.index')} className="underline">
+                                        <Link href={route('books.index')} className="underline hover:text-yellow-700 dark:hover:text-yellow-400">
                                             Ir al catálogo
                                         </Link>
                                     </p>

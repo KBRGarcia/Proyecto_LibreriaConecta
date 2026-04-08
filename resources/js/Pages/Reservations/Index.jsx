@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Pagination from '@/Components/Pagination';
@@ -5,12 +6,15 @@ import StatusBadge from '@/Components/StatusBadge';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DangerButton from '@/Components/DangerButton';
 import EmptyState from '@/Components/EmptyState';
+import Modal from '@/Components/Modal';
 
 export default function Index({ auth, reservations }) {
-    const handleCancel = (reservation) => {
-        if (confirm('¿Estás seguro de que deseas cancelar esta reserva?')) {
-            router.post(route('reservations.cancel', reservation.id));
-        }
+    const [cancelModal, setCancelModal] = useState({ open: false, reservation: null });
+
+    const confirmCancel = () => {
+        router.post(route('reservations.cancel', cancelModal.reservation.id), {}, {
+            onSuccess: () => setCancelModal({ open: false, reservation: null })
+        });
     };
 
     return (
@@ -93,14 +97,14 @@ export default function Index({ auth, reservations }) {
                                                             <div className="flex justify-end space-x-2">
                                                                 <Link
                                                                     href={route('reservations.show', reservation.id)}
-                                                                    className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300"
+                                                                    className={`bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full ${reservation.status === 'pendiente' ? 'mr-4' : ''}`}
                                                                 >
                                                                     Ver
                                                                 </Link>
                                                                 {reservation.status === 'pendiente' && (
                                                                     <button
-                                                                        onClick={() => handleCancel(reservation)}
-                                                                        className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
+                                                                        onClick={() => setCancelModal({ open: true, reservation })}
+                                                                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
                                                                     >
                                                                         Cancelar
                                                                     </button>
@@ -136,6 +140,21 @@ export default function Index({ auth, reservations }) {
                     </div>
                 </div>
             </div>
+
+            <Modal show={cancelModal.open} onClose={() => setCancelModal({ open: false, reservation: null })}>
+                <div className="p-6">
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Cancelar reserva</h3>
+                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                        ¿Estás seguro de que deseas cancelar la reserva del libro "{cancelModal.reservation?.book?.title}"? Esta acción no se puede deshacer.
+                    </p>
+                    <div className="mt-4 flex justify-end space-x-4">
+                        <button onClick={() => setCancelModal({ open: false, reservation: null })} className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:text-gray-100 transition-colors duration-200">
+                            Cancelar
+                        </button>
+                        <DangerButton onClick={confirmCancel}>Confirmar Cancelación</DangerButton>
+                    </div>
+                </div>
+            </Modal>
         </AuthenticatedLayout>
     );
 }

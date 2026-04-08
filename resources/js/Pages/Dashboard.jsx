@@ -290,11 +290,9 @@ function ClientDashboard({ auth, stats, myReservations, featuredBooks }) {
                         <p className="opacity-90">
                             Explora nuestro catálogo y gestiona tus reservas desde aquí.
                         </p>
-                        <div className="mt-4">
-                            <Link href={route('books.index')}>
-                                <PrimaryButton className="bg-white text-indigo-600 hover:bg-gray-100">
-                                    Explorar catálogo
-                                </PrimaryButton>
+                        <div className="mt-6">
+                            <Link href={route('books.index')} className="inline-block px-4 py-2 bg-white text-indigo-600 hover:bg-gray-100 rounded-md font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150">
+                                Explorar catálogo
                             </Link>
                         </div>
                     </div>
